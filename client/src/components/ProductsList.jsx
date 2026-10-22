@@ -3,7 +3,7 @@ const ProductsList = () => {
   return (
     <>
       <div className="products-list">
-*      </div>
+      </div>
       <Link to="/add" className="floating-add">
         <span className="plus-icon">+</span>
         Add Product
