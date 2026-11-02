@@ -1,13 +1,13 @@
 import React from "react";
 import Search from "./Search";
 import { NavLink , Link } from "react-router-dom";
-const Navbar = () => {
+const Navbar = (props) => {
   return (
     <div className="nav">
       <NavLink to="/" className="logo">
         TEK STORE
       </NavLink>
-      <Search />
+      <Search setsearch={props.setsearch} />
 
 
     </div>
