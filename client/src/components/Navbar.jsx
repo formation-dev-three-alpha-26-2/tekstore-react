@@ -8,8 +8,10 @@ const Navbar = (props) => {
         TEK STORE
       </NavLink>
       <Search setsearch={props.setsearch} />
-
-
+   <NavLink to="/cart">
+       panier
+      </NavLink>
+ 
     </div>
   );
 };

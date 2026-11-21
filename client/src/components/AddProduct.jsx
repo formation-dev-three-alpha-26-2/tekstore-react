@@ -1,39 +1,57 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const AddProduct = (props) => {
-  const [nom, setnom] = useState("hi");
+  const [nom, setnom] = useState("");
   const [prix, setprix] = useState(0);
   const [description, setdescription] = useState("");
   const [category, setcategory] = useState("");
   const [image, setimage] = useState("");
-const navigate = useNavigate()
-  const submitNewProduit = (e) => {
+  const navigate = useNavigate();
 
-    e.preventDefault()
+  const postData = (x) => {
+    x.preventDefault();
+
     let newProduit = {
-      nom: nom,
-      prix: prix,
+      name: nom,
+      price: prix,
       description: description,
-      category: category,
-      image: image,
+      categories: category,
+      imageUrl: image,
     };
 
-    props.add(newProduit);
-    navigate("/")
+    console.log(newProduit);
+
+    axios
+      .post("https://tek-server-hyxr.onrender.com/api/products", newProduit)
+      .then(() => {
+        props.fetchData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    navigate("/");
   };
+
+let change = (e) => {
+
+setnom(e.target.value)
+
+}
 
 
   return (
-    <form className="add-product-form" onSubmit={submitNewProduit}  >
+    <form
+      className="add-product-form"
+      onSubmit={postData}
+    >
       <label>
         Add your product
-
-        <label  > nom de l'article :  </label>
+        <label> nom de l'article : </label>
         <input
           type="text"
           placeholder="Porduct Name"
-    
-          onChange={(event) => setnom(event.target.value)}
+          onChange={change}
         />
         <input
           type="text"

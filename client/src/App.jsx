@@ -1,65 +1,75 @@
 import "./App.css";
 
-import exempleDonneesProduits from "./data/data";
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 const App = () => {
-  const [data, setdata] = useState(exempleDonneesProduits);
-  const [searchValue, setsearch] = useState("");
+  const [dataProduits, setdata] = useState([]);
 
+  // const [searchValue, setsearch] = useState("");
 
   // variable fih valeur ""
 
   // setsearch function eli tabdl fl valeur
 
-
-
-
-  
-  const add = (newProduit) => {
-    setdata([...data, newProduit]);
+  const fetchData = () => {
+    axios
+      .get("https://tek-server-hyxr.onrender.com/api/products")
+      .then((rep) => {
+        console.log(rep);
+        setdata(rep.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  let newData = data.filter((el) => {
-    return el.nom.toLowerCase().includes(searchValue.toLowerCase());
-  });
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  let deleteProduit = (id) => {
-    //  let newDeletedData = data.filter((el) => {
-    //       return el.id !== id;
-    //     })
-    // setdata(newDeletedData)
+  // const add = (newProduit) => {
+  //   setdata([...data, newProduit]);
+  // };
 
-    setdata((oldData) =>
-      oldData.filter((el) => {
-        return el.id !== id;
-      }),
-    );
-  };
+  // let newData = data.filter((el) => {
+  //   return el.nom.toLowerCase().includes(searchValue.toLowerCase());
+  // });
 
+  // let deleteProduit = (id) => {
+  //   //  let newDeletedData = data.filter((el) => {
+  //   //       return el.id !== id;
+  //   //     })
+  //   // setdata(newDeletedData)
 
-  let updateproduit = (produit) => {
-  let updateddata =   data.map((el) => {
-      if (el.id === produit.id) {
-        return produit;
-      }
+  //   setdata((oldData) =>
+  //     oldData.filter((el) => {
+  //       return el.id !== id;
+  //     }),
+  //   );
+  // };
 
-      return el;
-    });
-    setdata(updateddata)
-  };
+  // let updateproduit = (produit) => {
+  // let updateddata =   data.map((el) => {
+  //     if (el.id === produit.id) {
+  //       return produit;
+  //     }
 
+  //     return el;
+  //   });
+  //   setdata(updateddata)
+  // };
 
   // produit : {id : 2 , nom : "manar"}
-// [  {id : 1 , nom : "hello"} , {id : 2 , nom : "hi"} , {id : 3 , nom : "test"}  ]
-// [{id : 1 , nom : "hello"}  ,{id : 2 , nom : "manar"} , {id : 3 , nom : "test"}  ]
+  // [  {id : 1 , nom : "hello"} , {id : 2 , nom : "hi"} , {id : 3 , nom : "test"}  ]
+  // [{id : 1 , nom : "hello"}  ,{id : 2 , nom : "manar"} , {id : 3 , nom : "test"}  ]
   // element {}
 
   return (
     <div className="App">
-      <Navbar setsearch={setsearch} />
-      <AppRoutes amine={newData} add={add} deleteProduit={deleteProduit}  updateproduit= {updateproduit} />
+      <Navbar />
+      <AppRoutes data={dataProduits} fetchData={fetchData} />
     </div>
   );
 };
